@@ -28,7 +28,12 @@ def _get_file_len(corpus):
 
 
 def _norm_text(text):
-    w, *toks = text.strip().split()
+    # w, *toks = text.strip().split()
+    temp = text.strip().split()
+    w = temp[0]
+    toks = []
+    if len(temp) > 1:
+        toks = temp[1:]
     try:
         w = float(w)
     except Exception:
