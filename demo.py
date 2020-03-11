@@ -85,7 +85,7 @@ data_db = str(data_path[:-4]) + '.' + str(MAX_LEN) + 'len.db'
 if os.path.isdir(data_db):
     print(data_db, 'exists, skip prepro.py')
 else:
-    cmd = ['prepro.py', '--corpus', data_path, '--max_seq_len', str(MAX_LEN]
+    cmd = ['prepro.py', '--corpus', data_path, '--max_seq_len', str(MAX_LEN)]
     cmd = ' '.join(cmd) #% {'CODE_ROOT': CODE_ROOT}
     print(cmd)
     ret = sp.run([PYTHON_EXE] + cmd.split(' '), stdout=sp.PIPE, stderr=sp.STDOUT, cwd=PROJECT_FOLDER)
