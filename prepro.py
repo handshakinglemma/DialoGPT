@@ -156,10 +156,9 @@ def main(args):
     if args.two_turn:
         attrs.append('2turn')
     if attrs:
-        temp = ".".join(attrs)
+        temp = str(".".join(attrs))
         # str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.'
-        db_path = (str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.'
-                   temp + '.db/db')
+        db_path = (str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.' + temp + '.db/db')
     else:
         db_path = str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.db/db'
     if exists(dirname(db_path)):
