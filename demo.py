@@ -19,7 +19,7 @@ PYTHON_EXE = 'python'
 MODEL_FOLDER = os.path.join(PROJECT_FOLDER, 'models')
 DATA_FOLDER = os.path.join(PROJECT_FOLDER, 'data')
 
-print(f'PROJECT_FOLDER = {PROJECT_FOLDER}')
+print('PROJECT_FOLDER', PROJECT_FOLDER)
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--data', type=str, default='dummy',
@@ -38,7 +38,7 @@ logger = logging.getLogger(__name__)
 
 
 if os.path.exists(MODEL_FOLDER):
-    print(f'Found existing models folder at {MODEL_FOLDER}, skip creating a new one!')
+    print('Found existing models folder at', MODEL_FOLDER, 'skip creating a new one!')
     os.makedirs(MODEL_FOLDER, exist_ok=True)
 else:
     os.makedirs(MODEL_FOLDER)
@@ -75,22 +75,22 @@ else:
     raise ValueError('you need to implement your own data type, or use either dummy, small, or full')
 
 if ret.returncode != 0:
-    print(f'error occurred, {ret.stdout}')
+    print('error occurred', ret.stdout)
     sys.exit(ret.returncode)
 
 logger.info('Preparing Data...')
 data_path = os.path.join(DATA_FOLDER, 'train.tsv')
 MAX_LEN = 128
-data_db = f'{data_path[:-4]}.{MAX_LEN}len.db'
+data_db = str(data_path[:-4]) + '.' + str(MAX_LEN) + 'len.db'
 if os.path.isdir(data_db):
-    print(f'{data_db} exists, skip prepro.py')
+    print(data_db, 'exists, skip prepro.py')
 else:
-    cmd = ['prepro.py', '--corpus', data_path, '--max_seq_len', f'{MAX_LEN}']
+    cmd = ['prepro.py', '--corpus', data_path, '--max_seq_len', str(MAX_LEN]
     cmd = ' '.join(cmd) #% {'CODE_ROOT': CODE_ROOT}
     print(cmd)
     ret = sp.run([PYTHON_EXE] + cmd.split(' '), stdout=sp.PIPE, stderr=sp.STDOUT, cwd=PROJECT_FOLDER)
     if ret.returncode != 0:
-        print(f'error occurred, {ret.stdout}')
+        print('error occurred', ret.stdout)
         sys.exit(ret.returncode)
 logger.info('Done!\n')
 
@@ -128,9 +128,9 @@ arg = ' '.join(args)
 train_cmd = train_cmd + ' ' + arg
 print(PYTHON_EXE + ' ' +train_cmd)
 logger.info('#########################################################################')
-with open('./output.log', 'wb') as f: 
+with open('./output.log', 'wb') as f:
     process = sp.Popen([PYTHON_EXE] + train_cmd.split(' '), stdout=sp.PIPE, stderr=sp.STDOUT, cwd=PROJECT_FOLDER)
-    for line in iter(process.stdout.readline, b''): 
-        sys.stdout.write(line.decode(sys.stdout.encoding)) 
+    for line in iter(process.stdout.readline, b''):
+        sys.stdout.write(line.decode(sys.stdout.encoding))
         f.write(line)
 logger.info('Done!\n')

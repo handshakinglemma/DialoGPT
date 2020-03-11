@@ -59,7 +59,7 @@ def download_file(url, folder):
         file_name = 'pytorch_model.bin'
 
     if os.path.isfile(os.path.join(folder, file_name)):
-        logger.info(f'{os.path.join(folder, file_name)} exists, return!')
+        logger.info(os.path.join(folder, file_name), 'exists, return!')
         return
 
     with open(os.path.join(folder, file_name), 'wb') as f:
@@ -85,7 +85,6 @@ def download_model_folder(model_size, dataset=None, from_scratch=None, DATA_FOLD
             model_train_type = model_size + '_ft'
         if model_train_type not in LSP_MODEL_URL[dataset]:
             k = ','.join(list(LSP_MODEL_URL[dataset].keys()))
-            raise ValueError(f'\'{model_train_type}\' not exist for dataset \'{dataset}\', please choose from [{k}]')
+            raise ValueError('model train type does not exist -- choose an existing one')
         download_file(LSP_MODEL_URL[dataset][model_train_type], target_folder)
     return target_folder
-
