@@ -1,5 +1,5 @@
-#  Copyright (c) Microsoft Corporation. 
-#  Licensed under the MIT license. 
+#  Copyright (c) Microsoft Corporation.
+#  Licensed under the MIT license.
 """
 preprocess input data into feature and stores binary as python shelve DB
 each chunk is gzipped JSON string
@@ -21,7 +21,8 @@ from gpt2_training.train_utils import InputFeatures_train as InputFeatures
 
 
 def _get_file_len(corpus):
-    n_line = int(sp.check_output(f"wc -l {corpus}".split(),
+    temp = 'wc -l ' + str(corpus)
+    n_line = int(sp.check_output(temp.split(),
                                  universal_newlines=True).split()[0])
     return n_line
 
@@ -150,10 +151,12 @@ def main(args):
     if args.two_turn:
         attrs.append('2turn')
     if attrs:
-        db_path = (f'{args.corpus[:-4]}.{args.max_seq_len}len.'
-                   f'{".".join(attrs)}.db/db')
+        temp = ".".join(attrs)
+        # str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.'
+        db_path = (str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.'
+                   temp + '.db/db')
     else:
-        db_path = f'{args.corpus[:-4]}.{args.max_seq_len}len.db/db'
+        db_path = str(args.corpus[:-4]) + '.' + str(args.max_seq_len) + 'len.db/db'
     if exists(dirname(db_path)):
         raise ValueError('Found existing DB, please backup')
     else:
@@ -167,7 +170,7 @@ def main(args):
             try:
                 if len(chunk) >= args.chunk_size:
                     # save and renew chunk
-                    db[f'chunk_{n_chunk}'] = gzip.compress(
+                    db['chunk_' + str(n_chunk)] = gzip.compress(
                         json.dumps(chunk[:args.chunk_size]).encode('utf-8'))
                     chunk = chunk[args.chunk_size:]
                     n_chunk += 1
@@ -190,7 +193,7 @@ def main(args):
                 print('!!! prepro exception !!!', e)
                 continue
         # save last chunk
-        db[f'chunk_{n_chunk}'] = gzip.compress(
+        db['chunk_' + str(n_chunk)] = gzip.compress(
             json.dumps(chunk).encode('utf-8'))
     # save relevant information to reproduce
     meta = {'n_example': n_example,
