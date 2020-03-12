@@ -15,7 +15,7 @@ import subprocess as sp
 
 
 PROJECT_FOLDER = os.path.dirname(os.path.realpath(__file__))
-PYTHON_EXE = 'python'
+PYTHON_EXE = 'python3'
 MODEL_FOLDER = os.path.join(PROJECT_FOLDER, 'models')
 DATA_FOLDER = os.path.join(PROJECT_FOLDER, 'data')
 
